@@ -12,13 +12,20 @@ end
 def add_gems
   gem 'devise', '~> 4.4.3'
   gem 'bulma-rails', '~> 0.6.2'
-  gem 'simple_form', '~> 3.5.1'
+  gem 'simple_form'
   gem 'gravatar_image_tag', github: 'mdeering/gravatar_image_tag'
   gem 'sidekiq', '~> 5.0'
+  gem_group :development do
+    gem 'rails-erd', require: false
+  end
   gem_group :development, :test do
     gem 'better_errors', '~> 2.4'
     gem 'guard', '~> 2.14', '>= 2.14.1'
     gem 'guard-livereload', '~> 2.5', '>= 2.5.2'
+    gem "pry"
+    gem 'pry-rails'
+    gem 'awesome_print'
+    gem 'dotenv-rails'
   end
 end
 
@@ -63,6 +70,10 @@ def remove_app_css
   run "rm app/assets/stylesheets/application.css"
 end
 
+def create_dot_env
+  create_file ".env"
+end
+
 def copy_templates
   directory "app", force: true
 end
@@ -89,6 +100,7 @@ after_bundle do
   add_home
   add_users
   remove_app_css
+  create_dot_env
   add_sidekiq
   init_guardfile
 
